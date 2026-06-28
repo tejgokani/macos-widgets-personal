@@ -109,8 +109,10 @@ export const render = ({ output }) => {
   try { if (output) data = JSON.parse(output) } catch (_) {}
 
   const weeks = buildGrid(data.days)
-  const CELL = 11
-  const GAP = 2
+  const GAP = 3
+  const LABEL_W = 22
+  const INNER_W = 560 - 40 - LABEL_W - GAP // widget - padding - labels - gap
+  const CELL = Math.max(10, Math.min(20, Math.floor((INNER_W - (weeks.length - 1) * GAP) / weeks.length)))
 
   // Month header labels: show label at first week a new month appears
   const monthLabels = {}
@@ -210,7 +212,7 @@ export const render = ({ output }) => {
       {/* ── Heatmap ── */}
       <div>
         {/* Month labels row */}
-        <div style={{ display: 'flex', marginBottom: '5px', paddingLeft: '26px' }}>
+        <div style={{ display: 'flex', marginBottom: '5px', paddingLeft: `${LABEL_W + GAP}px` }}>
           <div style={{ display: 'flex', position: 'relative', width: `${weeks.length * (CELL + GAP) - GAP}px` }}>
             {Object.entries(monthLabels).map(([month, wi]) => (
               <div key={month} style={{
@@ -229,7 +231,7 @@ export const render = ({ output }) => {
         {/* Grid + day labels */}
         <div style={{ display: 'flex', gap: `${GAP}px`, alignItems: 'flex-start' }}>
           {/* Day labels (Mon, Wed, Fri, Sun) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: `${GAP}px`, width: '22px', paddingTop: '1px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${GAP}px`, width: `${LABEL_W}px`, paddingTop: '1px', flexShrink: 0 }}>
             {[1,2,3,4,5,6,0].map(d => (
               <div key={d} style={{
                 height: `${CELL}px`,

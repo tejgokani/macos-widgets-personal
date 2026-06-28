@@ -44,19 +44,30 @@ for repo in repos:
                     run_dt = datetime.datetime.fromisoformat(dt_str.replace('Z', '+00:00'))
                 except Exception:
                     continue
+                # run_duration_ms is often 0/missing; fall back to timestamp diff
                 duration = run.get('run_duration_ms', 0) or 0
-                concluded = run.get('conclusion') == 'success'
+                if not duration:
+                    try:
+                        t0 = datetime.datetime.fromisoformat((run.get('run_started_at') or run.get('created_at', '')).replace('Z', '+00:00'))
+                        t1 = datetime.datetime.fromisoformat(run.get('updated_at', '').replace('Z', '+00:00'))
+                        duration = max(0, int((t1 - t0).total_seconds() * 1000))
+                    except Exception:
+                        pass
+                conclusion = run.get('conclusion')
+                is_complete = conclusion in ('success', 'failure', 'cancelled', 'timed_out', 'skipped', 'neutral', 'action_required', 'stale')
+                is_success = conclusion == 'success'
                 if run_dt >= since_dt:
                     any_in_range = True
                     day_counts[run_dt.strftime('%Y-%m-%d')] += 1
                     total += 1
-                    if concluded:
-                        success += 1
+                    if is_complete:
+                        if is_success:
+                            success += 1
                     ms += duration
                 elif run_dt >= prev_dt:
                     any_in_range = True
                     ptotal += 1
-                    if concluded:
+                    if is_complete and is_success:
                         psuccess += 1
                     pms += duration
             if len(runs) < 100 or not any_in_range:
@@ -66,6 +77,7 @@ for repo in repos:
         continue
 
 max_count = max(day_counts.values()) if day_counts else 1
+completed = success + (total - success)  # recalculate properly below
 
 print(json.dumps({
     'days': dict(day_counts),
