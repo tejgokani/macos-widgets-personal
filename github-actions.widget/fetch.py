@@ -6,10 +6,11 @@ prev_dt = since_dt - datetime.timedelta(days=60)
 
 try:
     r = subprocess.run(
-        ['gh', 'api', 'user/repos', '--paginate', '-q', '.[].full_name'],
-        capture_output=True, text=True, timeout=30
+        ['gh', 'api', 'user/repos', '--paginate', '-q', '.[] | select(.owner.login == env.GH_USER) | .full_name'],
+        capture_output=True, text=True, timeout=30,
+        env={**__import__('os').environ, 'GH_USER': subprocess.run(['gh', 'api', 'user', '-q', '.login'], capture_output=True, text=True).stdout.strip()}
     )
-    repos = [x.strip() for x in r.stdout.strip().split('\n') if x.strip()][:10]
+    repos = [x.strip() for x in r.stdout.strip().split('\n') if x.strip()][:12]
 except Exception:
     repos = []
 
