@@ -1,3 +1,5 @@
+import { React } from 'uebersicht'
+
 export const command = `/opt/homebrew/bin/python3 "$HOME/Library/Application Support/Übersicht/widgets/clock-weather.widget/fetch.py" 2>/dev/null || echo '{}'`
 
 export const refreshFrequency = 60 * 1000
