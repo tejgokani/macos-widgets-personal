@@ -13,7 +13,7 @@ export const className = `
 `
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-const DAY_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+const DAY_LABELS = ['S','M','T','W','T','F','S']
 
 const LEVELS = [
   'rgba(255,255,255,0.05)',
@@ -25,10 +25,11 @@ const LEVELS = [
 
 const getLevel = (count, max) => {
   if (!count) return 0
-  const r = count / max
-  if (r < 0.2) return 1
-  if (r < 0.45) return 2
-  if (r < 0.72) return 3
+  // Log scale so outlier days don't wash out normal activity
+  const r = Math.log(count + 1) / Math.log(max + 1)
+  if (r < 0.25) return 1
+  if (r < 0.5)  return 2
+  if (r < 0.75) return 3
   return 4
 }
 
@@ -160,7 +161,7 @@ export const render = ({ output }) => {
       </div>
 
       {/* Heatmap month labels */}
-      <div style={{ display: 'grid', gridTemplateColumns: `22px ${GAP}px repeat(${weeks.length}, 1fr)`, marginBottom: '4px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: `14px ${GAP}px repeat(${weeks.length}, 1fr)`, marginBottom: '4px' }}>
         <div/><div/>
         {weeks.map((_, wi) => (
           <div key={wi} style={{ fontSize: '8.5px', color: 'rgba(175,160,245,0.58)', fontWeight: '500', overflow: 'visible', whiteSpace: 'nowrap' }}>
@@ -170,13 +171,13 @@ export const render = ({ output }) => {
       </div>
 
       {/* Heatmap grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: `22px ${GAP}px repeat(${weeks.length}, 1fr)`, gap: `${GAP}px 0` }}>
+      <div style={{ display: 'grid', gridTemplateColumns: `14px ${GAP}px repeat(${weeks.length}, 1fr)`, gap: `${GAP}px 0` }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: `${GAP}px` }}>
           {[1,2,3,4,5,6,0].map(d => (
             <div key={d} style={{
               fontSize: '8px', color: 'rgba(175,160,245,0.5)',
-              display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-              paddingRight: '3px', aspectRatio: '1',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              aspectRatio: '1',
               visibility: [1,3,5,0].includes(d) ? 'visible' : 'hidden',
             }}>
               {DAY_LABELS[d]}
