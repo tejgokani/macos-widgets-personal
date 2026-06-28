@@ -1,11 +1,11 @@
-export const command = `python3 "$HOME/Library/Application Support/Übersicht/widgets/github-actions.widget/fetch.py" 2>/dev/null || echo '{"days":{},"maxCount":1,"totalRuns":0,"successRate":0,"totalMinutes":0,"prevTotalRuns":0,"prevSuccessRate":0,"prevTotalMinutes":0}'`
+export const command = `/opt/homebrew/bin/python3 "$HOME/Library/Application Support/Übersicht/widgets/github-actions.widget/fetch.py" 2>/dev/null || echo '{"days":{},"maxCount":1,"totalRuns":0,"successRate":0,"totalMinutes":0,"prevTotalRuns":0,"prevSuccessRate":0,"prevTotalMinutes":0}'`
 
 export const refreshFrequency = 10 * 60 * 1000
 
 export const className = `
   top: 40px;
   left: 40px;
-  width: 820px;
+  width: 560px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 `
@@ -66,13 +66,13 @@ const pctDelta = (cur, prev) => {
 }
 
 const GitHubIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true">
     <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
   </svg>
 )
 
 const RefreshIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(200,185,255,0.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(200,185,255,0.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M1 4v6h6M23 20v-6h-6"/>
     <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/>
   </svg>
@@ -85,20 +85,20 @@ const ChevronIcon = () => (
 )
 
 const PlayIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <polygon points="5 3 19 12 5 21 5 3"/>
   </svg>
 )
 
 const CheckIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
     <polyline points="22 4 12 14.01 9 11.01"/>
   </svg>
 )
 
 const ClockIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(175,155,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12 6 12 12 16 14"/>
   </svg>
@@ -109,8 +109,8 @@ export const render = ({ output }) => {
   try { if (output) data = JSON.parse(output) } catch (_) {}
 
   const weeks = buildGrid(data.days)
-  const CELL = 14
-  const GAP = 3
+  const CELL = 11
+  const GAP = 2
 
   // Month header labels: show label at first week a new month appears
   const monthLabels = {}
@@ -136,7 +136,7 @@ export const render = ({ output }) => {
     const color = neutral ? 'rgba(175,165,240,0.45)' : good ? '#4ade80' : '#f87171'
     const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : ''
     return (
-      <div style={{ fontSize: '12px', color, fontWeight: '500', marginTop: '4px' }}>
+      <div style={{ fontSize: '10px', color, fontWeight: '500', marginTop: '3px' }}>
         {arrow} {Math.abs(delta)}% vs previous 2 months
       </div>
     )
@@ -152,8 +152,8 @@ export const render = ({ output }) => {
     <div style={{
       background: 'rgba(10, 8, 32, 0.80)',
       border: '1px solid rgba(140,115,255,0.16)',
-      borderRadius: '22px',
-      padding: '24px 28px 22px',
+      borderRadius: '18px',
+      padding: '18px 20px 16px',
       backdropFilter: 'blur(28px)',
       WebkitBackdropFilter: 'blur(28px)',
       boxShadow: '0 12px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)',
@@ -161,31 +161,30 @@ export const render = ({ output }) => {
     }}>
 
       {/* ── Header ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
-            width: '46px', height: '46px', borderRadius: '50%',
+            width: '36px', height: '36px', borderRadius: '50%',
             background: 'linear-gradient(135deg, #24292e 0%, #1a1f24 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: '1.5px solid rgba(255,255,255,0.14)',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
             flexShrink: 0,
           }}>
             <GitHubIcon />
           </div>
           <div>
-            <div style={{ fontSize: '19px', fontWeight: '600', color: '#fff', lineHeight: '1.25', letterSpacing: '-0.3px' }}>
+            <div style={{ fontSize: '15px', fontWeight: '600', color: '#fff', lineHeight: '1.25', letterSpacing: '-0.2px' }}>
               GitHub Actions
             </div>
-            <div style={{ fontSize: '12.5px', color: 'rgba(175,160,245,0.62)', marginTop: '2px', letterSpacing: '0.01em' }}>
+            <div style={{ fontSize: '11px', color: 'rgba(175,160,245,0.62)', marginTop: '1px' }}>
               Activity · Last 2 months
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{
-            width: '32px', height: '32px', borderRadius: '9px',
+            width: '26px', height: '26px', borderRadius: '7px',
             background: 'rgba(255,255,255,0.07)',
             border: '1px solid rgba(255,255,255,0.09)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -194,14 +193,13 @@ export const render = ({ output }) => {
             <RefreshIcon />
           </div>
           <div style={{
-            height: '32px', padding: '0 12px 0 14px',
-            borderRadius: '9px',
+            height: '26px', padding: '0 9px 0 11px',
+            borderRadius: '7px',
             background: 'rgba(255,255,255,0.07)',
             border: '1px solid rgba(255,255,255,0.09)',
-            display: 'flex', alignItems: 'center', gap: '7px',
+            display: 'flex', alignItems: 'center', gap: '5px',
             cursor: 'pointer',
-            fontSize: '12.5px', color: 'rgba(220,210,255,0.88)', fontWeight: '500',
-            letterSpacing: '0.01em',
+            fontSize: '11px', color: 'rgba(220,210,255,0.88)', fontWeight: '500',
           }}>
             Last 2 Months
             <ChevronIcon />
@@ -212,16 +210,15 @@ export const render = ({ output }) => {
       {/* ── Heatmap ── */}
       <div>
         {/* Month labels row */}
-        <div style={{ display: 'flex', marginBottom: '7px', paddingLeft: '34px' }}>
+        <div style={{ display: 'flex', marginBottom: '5px', paddingLeft: '26px' }}>
           <div style={{ display: 'flex', position: 'relative', width: `${weeks.length * (CELL + GAP) - GAP}px` }}>
             {Object.entries(monthLabels).map(([month, wi]) => (
               <div key={month} style={{
                 position: 'absolute',
                 left: `${wi * (CELL + GAP)}px`,
-                fontSize: '11.5px',
+                fontSize: '10px',
                 color: 'rgba(175,160,245,0.58)',
                 fontWeight: '500',
-                letterSpacing: '0.02em',
               }}>
                 {MONTHS[parseInt(month)]}
               </div>
@@ -232,16 +229,15 @@ export const render = ({ output }) => {
         {/* Grid + day labels */}
         <div style={{ display: 'flex', gap: `${GAP}px`, alignItems: 'flex-start' }}>
           {/* Day labels (Mon, Wed, Fri, Sun) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: `${GAP}px`, width: '28px', paddingTop: '1px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${GAP}px`, width: '22px', paddingTop: '1px', flexShrink: 0 }}>
             {[1,2,3,4,5,6,0].map(d => (
               <div key={d} style={{
                 height: `${CELL}px`,
-                fontSize: '10.5px',
+                fontSize: '9.5px',
                 color: 'rgba(175,160,245,0.5)',
                 display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-                paddingRight: '4px',
+                paddingRight: '3px',
                 visibility: [1,3,5,0].includes(d) ? 'visible' : 'hidden',
-                letterSpacing: '0.01em',
               }}>
                 {DAY_LABELS[d]}
               </div>
@@ -273,8 +269,8 @@ export const render = ({ output }) => {
         </div>
 
         {/* Legend */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '12px', justifyContent: 'center' }}>
-          <span style={{ fontSize: '11px', color: 'rgba(175,160,245,0.45)', marginRight: '3px' }}>Less</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '9px', justifyContent: 'center' }}>
+          <span style={{ fontSize: '10px', color: 'rgba(175,160,245,0.45)', marginRight: '2px' }}>Less</span>
           {LEVELS.map((bg, i) => (
             <div key={i} style={{
               width: `${CELL}px`, height: `${CELL}px`,
@@ -284,37 +280,37 @@ export const render = ({ output }) => {
               flexShrink: 0,
             }} />
           ))}
-          <span style={{ fontSize: '11px', color: 'rgba(175,160,245,0.45)', marginLeft: '3px' }}>More</span>
+          <span style={{ fontSize: '10px', color: 'rgba(175,160,245,0.45)', marginLeft: '2px' }}>More</span>
         </div>
       </div>
 
       {/* ── Divider ── */}
-      <div style={{ height: '1px', background: 'rgba(140,115,255,0.14)', margin: '20px 0 18px' }} />
+      <div style={{ height: '1px', background: 'rgba(140,115,255,0.14)', margin: '14px 0 12px' }} />
 
       {/* ── Stats ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
         {stats.map(({ icon, label, value, delta, invert }) => (
           <div key={label} style={{
             background: cardBg,
-            borderRadius: '16px',
-            padding: '15px 17px',
+            borderRadius: '12px',
+            padding: '11px 13px',
             border: cardBorder,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '11px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
               <div style={{
-                width: '30px', height: '30px',
-                borderRadius: '8px',
+                width: '24px', height: '24px',
+                borderRadius: '6px',
                 background: statIconBg,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
               }}>
                 {icon}
               </div>
-              <span style={{ fontSize: '12.5px', color: 'rgba(175,160,245,0.65)', fontWeight: '500', letterSpacing: '0.01em' }}>
+              <span style={{ fontSize: '11px', color: 'rgba(175,160,245,0.65)', fontWeight: '500' }}>
                 {label}
               </span>
             </div>
-            <div style={{ fontSize: '27px', fontWeight: '700', color: '#fff', letterSpacing: '-0.8px', lineHeight: '1' }}>
+            <div style={{ fontSize: '21px', fontWeight: '700', color: '#fff', letterSpacing: '-0.5px', lineHeight: '1' }}>
               {value}
             </div>
             <Delta delta={delta} invert={invert} />
